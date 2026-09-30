@@ -1,0 +1,263 @@
+:root,
+[data-bs-theme=light] {
+    --bg: #EEF1F3;
+    --ink: #15191C;
+    --mute: #5B656C;
+    --rule: #D5DBDF;
+    --tape: #15191C;
+    --accent: #2B4BFF;
+    --chip: #E4E9EC;
+    --on-accent: #fff
+}
+
+[data-bs-theme=dark] {
+    --bg: #0F1316;
+    --ink: #E9EDEF;
+    --mute: #8E99A1;
+    --rule: #252C31;
+    --tape: #E9EDEF;
+    --accent: #6F86FF;
+    --chip: #171D21;
+    --on-accent: #0F1316
+}
+
+:root {
+    --display: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+    --bs-body-font-family: 'Instrument Sans', system-ui, sans-serif
+}
+
+body {
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--ink);
+    --bs-secondary-color: var(--mute);
+    --bs-border-color: var(--rule);
+    position: relative;
+    overflow-x: hidden;
+    font-size: 1.0625rem
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 3px
+}
+
+#track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0
+}
+
+.navbar {
+    backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    --bs-navbar-color: var(--mute);
+    --bs-navbar-hover-color: var(--ink);
+    --bs-navbar-active-color: var(--ink);
+    --bs-navbar-brand-color: var(--ink);
+    --bs-navbar-brand-hover-color: var(--accent);
+    --bs-navbar-toggler-border-color: var(--rule)
+}
+
+.navbar-brand {
+    font-family: var(--display);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    font-size: 1.4rem
+}
+
+main {
+    position: relative;
+    z-index: 1;
+    padding-left: clamp(72px, 11vw, 170px)
+}
+
+section {
+    padding-block: clamp(72px, 12vw, 150px)
+}
+
+.hero {
+    padding-top: 96px
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--display)
+}
+
+h1 {
+    font-weight: 800;
+    font-size: clamp(3.6rem, 15vw, 12rem);
+    line-height: .9;
+    letter-spacing: -.045em;
+    overflow: hidden
+}
+
+h1 span {
+    display: inline-block;
+    animation: rise 1s cubic-bezier(.2, .8, .2, 1) both
+}
+
+@keyframes rise {
+    from {
+        transform: translateY(105%)
+    }
+
+    to {
+        transform: none
+    }
+}
+
+.lead {
+    max-width: 34ch;
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    line-height: 1.35;
+    font-weight: 500;
+    animation: fade 1s .7s both
+}
+
+.status {
+    animation: fade 1s .9s both
+}
+
+.status i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: ping 2.2s infinite
+}
+
+@keyframes fade {
+    from {
+        opacity: 0
+    }
+}
+
+@keyframes ping {
+    0% {
+        box-shadow: 0 0 0 0 var(--accent)
+    }
+
+    70%,
+    100% {
+        box-shadow: 0 0 0 12px transparent
+    }
+}
+
+h2 {
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    letter-spacing: -.03em;
+    line-height: 1.05
+}
+
+.projects a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    transition: padding .35s cubic-bezier(.2, .8, .2, 1)
+}
+
+.projects a::before {
+    content: "";
+    position: absolute;
+    left: -28px;
+    top: 28px;
+    bottom: 28px;
+    width: 5px;
+    border-radius: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1)
+}
+
+.projects a:hover,
+.projects a:focus-visible {
+    padding-left: 18px !important
+}
+
+.projects a:hover::before,
+.projects a:focus-visible::before {
+    transform: scaleY(1)
+}
+
+.projects h3 {
+    font-weight: 700;
+    letter-spacing: -.02em;
+    font-size: clamp(1.4rem, 3vw, 2rem)
+}
+
+.projects .arrow {
+    font-size: 1.6rem;
+    transition: transform .3s
+}
+
+.projects a:hover .arrow {
+    transform: translate(4px, -4px)
+}
+
+.projects .badge {
+    background: var(--chip);
+    color: var(--ink);
+    font-weight: 500
+}
+
+.btn-accent {
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-color: var(--on-accent);
+    --bs-btn-hover-bg: var(--ink);
+    --bs-btn-hover-border-color: var(--ink);
+    --bs-btn-hover-color: var(--bg);
+    --bs-btn-active-bg: var(--ink);
+    --bs-btn-active-color: var(--bg);
+    --bs-btn-active-border-color: var(--ink)
+}
+
+.btn-line {
+    --bs-btn-color: var(--ink);
+    --bs-btn-border-color: var(--ink);
+    --bs-btn-hover-bg: var(--ink);
+    --bs-btn-hover-color: var(--bg);
+    --bs-btn-hover-border-color: var(--ink);
+    --bs-btn-active-bg: var(--ink);
+    --bs-btn-active-color: var(--bg)
+}
+
+a.mail {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 7vw, 5rem);
+    letter-spacing: -.035em;
+    line-height: 1.05;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 5px solid var(--accent);
+    word-break: break-word
+}
+
+a.mail:hover {
+    color: var(--accent)
+}
+
+@media (max-width:760px) {
+    .projects a::before {
+        left: -20px
+    }
+}
+
+@media (prefers-reduced-motion:reduce) {
+    * {
+        animation: none !important;
+        transition: none !important
+    }
+
+    html {
+        scroll-behavior: auto !important
+    }
+}

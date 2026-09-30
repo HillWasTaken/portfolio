@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="nl" data-bs-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quincy — Portfolio</title>
+  <script>
+    // Thema vóór het renderen instellen (geen flits)
+    (function () {
+      var t; try { t = localStorage.getItem('theme') } catch (e) { }
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t)
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root,
+    [data-bs-theme=light] {
+      --bg: #EEF1F3;
+      --ink: #15191C;
+      --mute: #5B656C;
+      --rule: #D5DBDF;
+      --tape: #15191C;
+      --accent: #2B4BFF;
+      --chip: #E4E9EC;
+      --on-accent: #fff
+    }
+
+    [data-bs-theme=dark] {
+      --bg: #0F1316;
+      --ink: #E9EDEF;
+      --mute: #8E99A1;
+      --rule: #252C31;
+      --tape: #E9EDEF;
+      --accent: #6F86FF;
+      --chip: #171D21;
+      --on-accent: #0F1316
+    }
+
+    :root {
+      --display: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+      --bs-body-font-family: 'Instrument Sans', system-ui, sans-serif
+    }
+
+    body {
+      --bs-body-bg: var(--bg);
+      --bs-body-color: var(--ink);
+      --bs-secondary-color: var(--mute);
+      --bs-border-color: var(--rule);
+      position: relative;
+      overflow-x: hidden;
+      font-size: 1.0625rem
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--accent) !important;
+      outline-offset: 3px
+    }
+
+    #track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0
+    }
+
+    .navbar {
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      --bs-navbar-color: var(--mute);
+      --bs-navbar-hover-color: var(--ink);
+      --bs-navbar-active-color: var(--ink);
+      --bs-navbar-brand-color: var(--ink);
+      --bs-navbar-brand-hover-color: var(--accent);
+      --bs-navbar-toggler-border-color: var(--rule)
+    }
+
+    .navbar-brand {
+      font-family: var(--display);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      font-size: 1.4rem
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding-left: clamp(72px, 11vw, 170px)
+    }
+
+    section {
+      padding-block: clamp(72px, 12vw, 150px)
+    }
+
+    .hero {
+      padding-top: 96px
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--display)
+    }
+
+    h1 {
+      font-weight: 800;
+      font-size: clamp(3.6rem, 15vw, 12rem);
+      line-height: .9;
+      letter-spacing: -.045em;
+      overflow: hidden
+    }
+
+    h1 span {
+      display: inline-block;
+      animation: rise 1s cubic-bezier(.2, .8, .2, 1) both
+    }
+
+    @keyframes rise {
+      from {
+        transform: translateY(105%)
+      }
+
+      to {
+        transform: none
+      }
+    }
+
+    .lead {
+      max-width: 34ch;
+      font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+      line-height: 1.35;
+      font-weight: 500;
+      animation: fade 1s .7s both
+    }
+
+    .status {
+      animation: fade 1s .9s both
+    }
+
+    .status i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: ping 2.2s infinite
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0
+      }
+    }
+
+    @keyframes ping {
+      0% {
+        box-shadow: 0 0 0 0 var(--accent)
+      }
+
+      70%,
+      100% {
+        box-shadow: 0 0 0 12px transparent
+      }
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      letter-spacing: -.03em;
+      line-height: 1.05
+    }
+
+    .projects a {
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      transition: padding .35s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .projects a::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 28px;
+      bottom: 28px;
+      width: 5px;
+      border-radius: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform .35s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .projects a:hover,
+    .projects a:focus-visible {
+      padding-left: 18px !important
+    }
+
+    .projects a:hover::before,
+    .projects a:focus-visible::before {
+      transform: scaleY(1)
+    }
+
+    .projects h3 {
+      font-weight: 700;
+      letter-spacing: -.02em;
+      font-size: clamp(1.4rem, 3vw, 2rem)
+    }
+
+    .projects .arrow {
+      font-size: 1.6rem;
+      transition: transform .3s
+    }
+
+    .projects a:hover .arrow {
+      transform: translate(4px, -4px)
+    }
+
+    .projects .badge {
+      background: var(--chip);
+      color: var(--ink);
+      font-weight: 500
+    }
+
+    .btn-accent {
+      --bs-btn-bg: var(--accent);
+      --bs-btn-border-color: var(--accent);
+      --bs-btn-color: var(--on-accent);
+      --bs-btn-hover-bg: var(--ink);
+      --bs-btn-hover-border-color: var(--ink);
+      --bs-btn-hover-color: var(--bg);
+      --bs-btn-active-bg: var(--ink);
+      --bs-btn-active-color: var(--bg);
+      --bs-btn-active-border-color: var(--ink)
+    }
+
+    .btn-line {
+      --bs-btn-color: var(--ink);
+      --bs-btn-border-color: var(--ink);
+      --bs-btn-hover-bg: var(--ink);
+      --bs-btn-hover-color: var(--bg);
+      --bs-btn-hover-border-color: var(--ink);
+      --bs-btn-active-bg: var(--ink);
+      --bs-btn-active-color: var(--bg)
+    }
+
+    a.mail {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 7vw, 5rem);
+      letter-spacing: -.035em;
+      line-height: 1.05;
+      text-decoration: none;
+      color: var(--ink);
+      border-bottom: 5px solid var(--accent);
+      word-break: break-word
+    }
+
+    a.mail:hover {
+      color: var(--accent)
+    }
+
+    @media (max-width:760px) {
+      .projects a::before {
+        left: -20px
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        animation: none !important;
+        transition: none !important
+      }
+
+      html {
+        scroll-behavior: auto !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <svg id="track" aria-hidden="true">
+    <path id="rail" fill="none" stroke="var(--rule)" stroke-width="6" stroke-linecap="round" />
+    <path id="ink" fill="none" stroke="var(--tape)" stroke-width="6" stroke-linecap="round" />
+    <g id="bot">
+      <rect x="-13" y="-10" width="26" height="20" rx="5" fill="var(--accent)" />
+      <circle cx="9" cy="-5" r="2.2" fill="var(--on-accent)" />
+      <circle cx="9" cy="0" r="2.2" fill="var(--on-accent)" />
+      <circle cx="9" cy="5" r="2.2" fill="var(--on-accent)" />
+    </g>
+  </svg>
+
+  <nav class="navbar navbar-expand-md fixed-top">
+    <div class="container-fluid px-3 px-md-5">
+      <a class="navbar-brand" href="#top">Quincy</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav"
+        aria-expanded="false" aria-label="Menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+          <li class="nav-item"><a class="nav-link" href="#projecten">Projecten</a></li>
+          <li class="nav-item"><a class="nav-link" href="#over">Over mij</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><button id="themeBtn" class="btn btn-sm btn-line rounded-pill ms-md-2 my-2 my-md-0"
+              type="button" aria-label="Wissel tussen licht en donker">Donker / licht</button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero min-vh-100 d-flex flex-column justify-content-center" id="top">
+      <h1 aria-label="Quincy"><span>Quincy</span></h1>
+      <p class="lead mt-4">Ik bouw dingen waar hardware en software elkaar raken.</p>
+      <p class="status d-flex align-items-center gap-2 mt-3 text-secondary"><i></i>HBO-ICT student aan Windesheim</p>
+    </section>
+
+    <section id="projecten" data-node>
+      <h2 class="mb-5">Projecten</h2>
+      <ul class="projects list-unstyled col-xl-10 p-0 m-0" id="list"></ul>
+    </section>
+
+    <section id="over" data-node>
+      <h2 class="mb-5">Over mij</h2>
+      <div class="row g-5 col-xl-10">
+        <div class="col-lg-7">
+          <p>Ik studeer HBO-ICT aan Windesheim en werk daarnaast. Wat ik het leukst vind is uitzoeken hoe iets écht
+            werkt: van een sensor die een zwarte lijn leest tot een bot die tickets afhandelt in Discord.</p>
+          <p>Mijn projecten beginnen meestal als losse experimenten en groeien uit tot iets wat andere mensen dagelijks
+            gebruiken. Dat leert me meer dan welk handboek ook.</p>
+        </div>
+        <dl class="col-lg-5 vstack gap-4 align-content-start">
+          <div>
+            <dt>Bezig met</dt>
+            <dd class="text-secondary mb-0">Embedded systems, bots, game-servers</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd class="text-secondary mb-0">MicroPython, Node.js, Lua, Git, ESP32-S3</dd>
+          </div>
+          <div>
+            <dt>Buiten de code</dt>
+            <dd class="text-secondary mb-0">Simracen en sleutelen aan mijn scooter</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="contact" data-node>
+      <h2 class="mb-5">Laten we praten</h2>
+      <a class="mail" href="mailto:jouw@email.nl">jouw@email.nl</a>
+      <div class="d-flex flex-wrap gap-3 mt-5">
+        <a class="btn btn-accent btn-lg rounded-pill px-4" href="https://github.com/jouw-gebruikersnaam">GitHub</a>
+        <a class="btn btn-line btn-lg rounded-pill px-4" href="https://www.linkedin.com/in/jouw-naam">LinkedIn</a>
+      </div>
+      <footer class="pt-5 text-secondary small">© <span id="yr"></span> Quincy</footer>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ===== Pas dit aan =====
+    const GITHUB = "jouw-gebruikersnaam"; // als dit klopt, worden je repo's automatisch geladen
+    const PROJECTS = [
+      { name: "Lijnvolger-robot", desc: "Robot die een zwarte lijn volgt met een 5-kanaals sensor, aangestuurd door een ESP32-S3.", tags: ["MicroPython", "ESP32-S3", "TCRT5000"], url: "https://github.com/jouw-gebruikersnaam/lijnvolger" },
+      { name: "Discord ticketbot", desc: "Bot met een ticketsysteem en rechtenbeheer voor een community-server.", tags: ["Node.js", "discord.js"], url: "https://github.com/jouw-gebruikersnaam/ticketbot" },
+      { name: "FiveM roleplay-server", desc: "Eigen scripts en resources voor een roleplay-server op het ESX-framework.", tags: ["Lua", "ESX", "FiveM"], url: "https://github.com/jouw-gebruikersnaam/fivem-server" },
+      { name: "Hardware Interfacing", desc: "Schoolopdrachten voor vak BC1: sensoren en actuatoren koppelen aan een microcontroller.", tags: ["MicroPython", "ESP32-S3"], url: "https://github.com/jouw-gebruikersnaam/bc1" }
+    ];
+    // =======================
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    function render(items) {
+      document.getElementById('list').innerHTML = items.map(p => `<li class="border-top"><a class="d-flex justify-content-between align-items-start gap-3 py-4" href="${esc(p.url)}" target="_blank" rel="noopener"><div><h3 class="mb-2">${esc(p.name)}</h3><p class="text-secondary mb-3">${esc(p.desc)}</p><div class="d-flex flex-wrap gap-2">${p.tags.map(t => `<span class="badge rounded-pill px-3 py-2">${esc(t)}</span>`).join('')}</div></div><span class="arrow" aria-hidden="true">↗</span></a></li>`).join('') + '<li class="border-top"></li>';
+      build();
+    }
+    render(PROJECTS);
+    (async () => {
+      try {
+        if (GITHUB === "jouw-gebruikersnaam") return;
+        const r = await fetch(`https://api.github.com/users/${GITHUB}/repos?sort=updated&per_page=12`);
+        if (!r.ok) return;
+        const d = (await r.json()).filter(x => !x.fork).map(x => ({ name: x.name, desc: x.description || "Zie de repository voor details.", tags: [x.language].filter(Boolean), url: x.html_url }));
+        if (d.length) render(d);
+      } catch (e) { }
+    })();
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const t = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-bs-theme', t);
+      try { localStorage.setItem('theme', t) } catch (e) { }
+    });
+
+    const rail = document.getElementById('rail'), ink = document.getElementById('ink'), bot = document.getElementById('bot'), svg = document.getElementById('track');
+    let len = 0;
+    function build() {
+      const H = document.body.scrollHeight, small = innerWidth < 760;
+      const a = small ? 20 : Math.min(48, innerWidth * .05), b = a + (small ? 14 : 34);
+      svg.setAttribute('height', H); svg.setAttribute('width', innerWidth);
+      let d = `M${a} 0`, x = a, i = 0;
+      document.querySelectorAll('[data-node]').forEach(s => {
+        const y = s.offsetTop + 40, nx = i % 2 === 0 ? b : a;
+        d += ` V${y - 150} C${x} ${y - 40},${nx} ${y - 110},${nx} ${y}`; x = nx; i++;
+      });
+      d += ` V${H - 40}`;
+      rail.setAttribute('d', d); ink.setAttribute('d', d);
+      len = ink.getTotalLength();
+      ink.style.strokeDasharray = len;
+      move();
+    }
+    function move() {
+      if (!len) return;
+      const p = Math.min(1, Math.max(0, (scrollY + innerHeight * .45) / document.body.scrollHeight));
+      const l = p * len, pt = ink.getPointAtLength(l), p2 = ink.getPointAtLength(Math.min(len, l + 2));
+      ink.style.strokeDashoffset = len - l;
+      bot.setAttribute('transform', `translate(${pt.x} ${pt.y}) rotate(${Math.atan2(p2.y - pt.y, p2.x - pt.x) * 180 / Math.PI})`);
+    }
+    addEventListener('scroll', () => requestAnimationFrame(move), { passive: true });
+    addEventListener('resize', build);
+    addEventListener('load', build);
+  </script>
+</body>
+
+</html>
