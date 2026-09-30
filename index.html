@@ -8,17 +8,21 @@
   <script>
     // Thema vóór het renderen instellen (geen flits)
     (function () {
-      var t; try { t = localStorage.getItem('theme') } catch (e) { }
+      var t; try { t = localStorage.getItem('theme') } catch (e) {
+        console.error(e)
+      }
       if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.setAttribute('data-bs-theme', t)
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link href="style.css" rel="stylesheet">
 </head>
 
@@ -93,19 +97,22 @@
 
     <section id="contact" data-node>
       <h2 class="mb-5">Laten we praten</h2>
-      <a class="mail" href="mailto:jouw@email.nl">jouw@email.nl</a>
+      <a class="mail" href="mailto:jouw@email.nl">quinvandenh@gmail.com</a>
       <div class="d-flex flex-wrap gap-3 mt-5">
-        <a class="btn btn-accent btn-lg rounded-pill px-4" href="https://github.com/jouw-gebruikersnaam">GitHub</a>
+        <a class="btn btn-accent btn-lg rounded-pill px-4" href="https://github.com/HillWasTaken">GitHub</a>
         <a class="btn btn-line btn-lg rounded-pill px-4" href="https://www.linkedin.com/in/jouw-naam">LinkedIn</a>
       </div>
       <footer class="pt-5 text-secondary small">© <span id="yr"></span> Quincy</footer>
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
   <script>
     // ===== Pas dit aan =====
-    const GITHUB = "jouw-gebruikersnaam"; // als dit klopt, worden je repo's automatisch geladen
+    const GITHUB = "HillWasTaken"; // als dit klopt, worden je repo's automatisch geladen
     const PROJECTS = [
       { name: "Lijnvolger-robot", desc: "Robot die een zwarte lijn volgt met een 5-kanaals sensor, aangestuurd door een ESP32-S3.", tags: ["MicroPython", "ESP32-S3", "TCRT5000"], url: "https://github.com/jouw-gebruikersnaam/lijnvolger" },
       { name: "Discord ticketbot", desc: "Bot met een ticketsysteem en rechtenbeheer voor een community-server.", tags: ["Node.js", "discord.js"], url: "https://github.com/jouw-gebruikersnaam/ticketbot" },
@@ -116,23 +123,30 @@
     const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     function render(items) {
       document.getElementById('list').innerHTML = items.map(p => `<li class="border-top"><a class="d-flex justify-content-between align-items-start gap-3 py-4" href="${esc(p.url)}" target="_blank" rel="noopener"><div><h3 class="mb-2">${esc(p.name)}</h3><p class="text-secondary mb-3">${esc(p.desc)}</p><div class="d-flex flex-wrap gap-2">${p.tags.map(t => `<span class="badge rounded-pill px-3 py-2">${esc(t)}</span>`).join('')}</div></div><span class="arrow" aria-hidden="true">↗</span></a></li>`).join('') + '<li class="border-top"></li>';
-      build();
+      requestAnimationFrame(build);
     }
     render(PROJECTS);
     (async () => {
+      const list = document.getElementById('list');
+      const say = t => list.insertAdjacentHTML('beforebegin', `<p class="text-secondary small" id="ghmsg">${t}</p>`);
       try {
-        if (GITHUB === "jouw-gebruikersnaam") return;
-        const r = await fetch(`https://api.github.com/users/${GITHUB}/repos?sort=updated&per_page=12`);
-        if (!r.ok) return;
-        const d = (await r.json()).filter(x => !x.fork).map(x => ({ name: x.name, desc: x.description || "Zie de repository voor details.", tags: [x.language].filter(Boolean), url: x.html_url }));
-        if (d.length) render(d);
-      } catch (e) { }
+        if (GITHUB === "jouw-gebruikersnaam") return say("GitHub: gebruikersnaam nog niet ingevuld");
+        const r = await fetch(`https://api.github.com/users/${GITHUB}/repos?sort=updated&per_page=30`);
+        if (!r.ok) return say("GitHub: foutstatus " + r.status);
+        const all = await r.json();
+        const d = all.filter(x => !x.fork).map(x => ({ name: x.name, desc: x.description || "Zie de repository voor details.", tags: [x.language].filter(Boolean), url: x.html_url }));
+        if (!d.length) return say("GitHub: " + all.length + " repo's gevonden, maar " + all.length + " zijn forks of er zijn er geen");
+        render(d);
+        say("GitHub: " + d.length + " repo's geladen");
+      } catch (e) { say("GitHub: fout, " + e.message); }
     })();
     document.getElementById('yr').textContent = new Date().getFullYear();
     document.getElementById('themeBtn').addEventListener('click', () => {
       const t = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-bs-theme', t);
-      try { localStorage.setItem('theme', t) } catch (e) { }
+      try { localStorage.setItem('theme', t) } catch (e) {
+        console.error(e)
+      }
     });
 
     const rail = document.getElementById('rail'), ink = document.getElementById('ink'), bot = document.getElementById('bot'), svg = document.getElementById('track');
